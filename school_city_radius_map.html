@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_5ac11cae58eb9c78356579f82ea0f6c2 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+<div style="
+    position: fixed;
+    top: 20px;
+    left: 50px;
+    z-index: 9999;
+    background: white;
+    padding: 10px;
+    border: 2px solid gray;
+    border-radius: 5px;
+">
+    <label><b>Select School:</b></label><br>
+    <select id="schoolSelect" style="width: 220px;">
+        <option value="all">All Schools</option>
+        <option value="Alabama">Alabama</option><option value="Arizona State">Arizona State</option><option value="Arizona">Arizona</option><option value="Arkansas">Arkansas</option><option value="Auburn">Auburn</option><option value="California">California</option><option value="Cincinnati">Cincinnati</option><option value="Clemson">Clemson</option><option value="Colorado">Colorado</option><option value="Florida State">Florida State</option><option value="Florida">Florida</option><option value="Georgia Tech">Georgia Tech</option><option value="Georgia">Georgia</option><option value="Illinois">Illinois</option><option value="Indiana">Indiana</option><option value="Iowa State">Iowa State</option><option value="Iowa">Iowa</option><option value="Kansas State">Kansas State</option><option value="Kansas">Kansas</option><option value="Kentucky">Kentucky</option><option value="LSU">LSU</option><option value="Louisville">Louisville</option><option value="Maryland">Maryland</option><option value="Miami">Miami</option><option value="Michigan State">Michigan State</option><option value="Michigan">Michigan</option><option value="Minnesota">Minnesota</option><option value="Mississippi State">Mississippi State</option><option value="Missouri">Missouri</option><option value="NC State">NC State</option><option value="Nebraska">Nebraska</option><option value="North Carolina">North Carolina</option><option value="Ohio State">Ohio State</option><option value="Oklahoma State">Oklahoma State</option><option value="Oklahoma">Oklahoma</option><option value="Ole Miss">Ole Miss</option><option value="Oregon">Oregon</option><option value="Penn State">Penn State</option><option value="Pitt">Pitt</option><option value="Purdue">Purdue</option><option value="Rutgers">Rutgers</option><option value="South Carolina">South Carolina</option><option value="Stanford">Stanford</option><option value="Syracuse">Syracuse</option><option value="Tennessee">Tennessee</option><option value="Texas A&M">Texas A&M</option><option value="Texas Tech">Texas Tech</option><option value="Texas">Texas</option><option value="UCF">UCF</option><option value="UCLA">UCLA</option><option value="USC">USC</option><option value="Utah">Utah</option><option value="Virginia Tech">Virginia Tech</option><option value="Virginia">Virginia</option><option value="Washington">Washington</option><option value="West Virginia">West Virginia</option><option value="Wisconsin">Wisconsin</option>
+    </select>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    var mapObj = map_5ac11cae58eb9c78356579f82ea0f6c2;
+    var circles = [];
+    var cityData = [{"school": "California", "city": "San Fransisco, CA", "lat": -0.9538938, "lon": -78.6046132, "level": 1}, {"school": "California", "city": "Los Angeles, CA", "lat": 34.0536909, "lon": -118.242766, "level": 2}, {"school": "California", "city": "Berkeley, CA", "lat": 37.8708393, "lon": -122.272863, "level": 3}, {"school": "Clemson", "city": "Greenville, SC", "lat": 34.851354, "lon": -82.3984882, "level": 1}, {"school": "Clemson", "city": "Clemson, SC", "lat": 34.6850749, "lon": -82.8364111, "level": 2}, {"school": "Florida State", "city": "Tallahassee, FL", "lat": 30.4380832, "lon": -84.2809332, "level": 1}, {"school": "Florida State", "city": "Miami, FL", "lat": 25.7741566, "lon": -80.1935973, "level": 2}, {"school": "Florida State", "city": "Fort Lauderdale, FL", "lat": 26.1223084, "lon": -80.1433786, "level": 3}, {"school": "Georgia Tech", "city": "Atlanta, GA", "lat": 33.7544657, "lon": -84.3898151, "level": 1}, {"school": "Louisville", "city": "Louisville, KY", "lat": 38.2542376, "lon": -85.759407, "level": 1}, {"school": "Miami", "city": "Miami, FL", "lat": 25.7741566, "lon": -80.1935973, "level": 1}, {"school": "Miami", "city": "New York City, NY", "lat": 40.7127281, "lon": -74.0060152, "level": 2}, {"school": "NC State", "city": "Raleigh, NC", "lat": 35.7803977, "lon": -78.6390989, "level": 1}, {"school": "NC State", "city": "Charlotte, NC", "lat": 35.2272086, "lon": -80.8430827, "level": 2}, {"school": "North Carolina", "city": "Raleigh, NC", "lat": 35.7803977, "lon": -78.6390989, "level": 1}, {"school": "North Carolina", "city": "Chapel Hill, NC", "lat": 35.9131542, "lon": -79.05578, "level": 2}, {"school": "Pitt", "city": "Pittsburg, PA", "lat": 40.9328397, "lon": -80.3633981, "level": 1}, {"school": "Stanford", "city": "San Fransisco, CA", "lat": -0.9538938, "lon": -78.6046132, "level": 1}, {"school": "Stanford", "city": "India", "lat": 22.3511148, "lon": 78.6677428, "level": 2}, {"school": "Stanford", "city": "New York City, NY", "lat": 40.7127281, "lon": -74.0060152, "level": 3}, {"school": "Syracuse", "city": "New York City, NY", "lat": 40.7127281, "lon": -74.0060152, "level": 1}, {"school": "Syracuse", "city": "Syracuse, NY", "lat": 43.0481221, "lon": -76.1474244, "level": 2}, {"school": "Virginia", "city": "Washington, DC", "lat": 38.8950982, "lon": -77.0363849, "level": 1}, {"school": "Virginia", "city": "Charlottesville, VA", "lat": 38.029306, "lon": -78.4766781, "level": 2}, {"school": "Virginia", "city": "New York City, NY", "lat": 40.7127281, "lon": -74.0060152, "level": 3}, {"school": "Virginia Tech", "city": "Washington, DC", "lat": 38.8950982, "lon": -77.0363849, "level": 1}, {"school": "Virginia Tech", "city": "Blacksburg, VA", "lat": 37.2296566, "lon": -80.4136767, "level": 2}, {"school": "Arizona", "city": "Tuscon, AZ", "lat": 32.1975767, "lon": -111.0808306, "level": 1}, {"school": "Arizona", "city": "Phoenix, AZ", "lat": 33.4484367, "lon": -112.074141, "level": 2}, {"school": "Arizona State", "city": "Phoenix, AZ", "lat": 33.4484367, "lon": -112.074141, "level": 1}, {"school": "Arizona State", "city": "Los Angeles, CA", "lat": 34.0536909, "lon": -118.242766, "level": 2}, {"school": "Cincinnati", "city": "Cincinnati, OH", "lat": 39.1014537, "lon": -84.5124602, "level": 1}, {"school": "Cincinnati", "city": "Columbus, OH", "lat": 39.9622601, "lon": -83.0007065, "level": 2}, {"school": "Colorado", "city": "Denver, CO", "lat": 39.7392364, "lon": -104.984862, "level": 1}, {"school": "Colorado", "city": "Boulder, CO", "lat": 40.0149856, "lon": -105.270545, "level": 2}, {"school": "Iowa State", "city": "Des Moines, IA", "lat": 41.5868654, "lon": -93.6249494, "level": 1}, {"school": "Iowa State", "city": "Ames, IA", "lat": 42.0267567, "lon": -93.6170448, "level": 2}, {"school": "Kansas", "city": "Kansas City, KS", "lat": 39.1134562, "lon": -94.626497, "level": 1}, {"school": "Kansas", "city": "Lawrence, KS", "lat": 38.9719137, "lon": -95.2359403, "level": 2}, {"school": "Kansas State", "city": "Kansas City, KS", "lat": 39.1134562, "lon": -94.626497, "level": 1}, {"school": "Kansas State", "city": "Manhattan, KS", "lat": 39.1836082, "lon": -96.5716694, "level": 2}, {"school": "Oklahoma State", "city": "Tulsa, OK", "lat": 36.1563122, "lon": -95.9927516, "level": 1}, {"school": "Oklahoma State", "city": "Oklahoma City, OK", "lat": 35.4729886, "lon": -97.5170536, "level": 2}, {"school": "Texas Tech", "city": "Dallas Fort-Worth, TX", "lat": 32.836883, "lon": -97.0329567, "level": 1}, {"school": "Texas Tech", "city": "Lubbock, TX", "lat": 33.5855677, "lon": -101.8470215, "level": 2}, {"school": "UCF", "city": "Orlando, FL", "lat": 28.5421218, "lon": -81.379045, "level": 1}, {"school": "UCF", "city": "Miami, FL", "lat": 25.7741566, "lon": -80.1935973, "level": 2}, {"school": "Utah", "city": "Salt Lake City, UT", "lat": 40.7596198, "lon": -111.886797, "level": 1}, {"school": "West Virginia", "city": "Morgan Town, WV", "lat": 39.2870566, "lon": -77.8690605, "level": 1}, {"school": "West Virginia", "city": "Washington DC", "lat": 38.8950982, "lon": -77.0363849, "level": 2}, {"school": "Illinois", "city": "Chicago, IL", "lat": 41.8755616, "lon": -87.6244212, "level": 1}, {"school": "Illinois", "city": "Urbana, IL", "lat": 40.1117174, "lon": -88.207301, "level": 2}, {"school": "Illinois", "city": "Champaign, IL", "lat": 40.1164841, "lon": -88.2430932, "level": 3}, {"school": "Indiana", "city": "Indianapolis, IN", "lat": 39.7683331, "lon": -86.1583502, "level": 1}, {"school": "Indiana", "city": "Bloomington, IN", "lat": 39.1670396, "lon": -86.5342881, "level": 2}, {"school": "Indiana", "city": "Chicago, IL", "lat": 41.8755616, "lon": -87.6244212, "level": 3}, {"school": "Iowa", "city": "Cedar Rapids, IA", "lat": 41.9758872, "lon": -91.6704053, "level": 1}, {"school": "Iowa", "city": "Iowa City, IA", "lat": 41.6612561, "lon": -91.5299106, "level": 2}, {"school": "Iowa", "city": "Chicago, IL", "lat": 41.8755616, "lon": -87.6244212, "level": 3}, {"school": "Maryland", "city": "Washington, DC", "lat": 38.8950982, "lon": -77.0363849, "level": 1}, {"school": "Maryland", "city": "Baltimore, MD", "lat": 39.2908816, "lon": -76.610759, "level": 2}, {"school": "Michigan", "city": "Detroit, MI", "lat": 42.3315509, "lon": -83.0466403, "level": 1}, {"school": "Michigan", "city": "New York City, NY", "lat": 40.7127281, "lon": -74.0060152, "level": 2}, {"school": "Michigan State", "city": "Detroit, MI", "lat": 42.3315509, "lon": -83.0466403, "level": 1}, {"school": "Michigan State", "city": "Lancing, MI", "lat": 43.1919328, "lon": -79.8407697, "level": 2}, {"school": "Minnesota", "city": "Minneapolis, MN", "lat": 44.9772995, "lon": -93.2654692, "level": 1}, {"school": "Minnesota", "city": "St.Paul, MN", "lat": 44.9497487, "lon": -93.0931028, "level": 2}, {"school": "Nebraska", "city": "Lincoln, NE", "lat": 40.8088861, "lon": -96.7077751, "level": 1}, {"school": "Nebraska", "city": "Omaha, NE", "lat": 41.2587459, "lon": -95.9383758, "level": 2}, {"school": "Ohio State", "city": "Columbus, OH", "lat": 39.9622601, "lon": -83.0007065, "level": 1}, {"school": "Ohio State", "city": "Cleveland, OH", "lat": 41.4996574, "lon": -81.6936772, "level": 2}, {"school": "Oregon", "city": "Portland, OR", "lat": 45.5202471, "lon": -122.674194, "level": 1}, {"school": "Oregon", "city": "Eugene, OR", "lat": 44.0505054, "lon": -123.0950506, "level": 2}, {"school": "Penn State", "city": "Philadelphia, PA", "lat": 39.9527237, "lon": -75.1635262, "level": 1}, {"school": "Penn State", "city": "New York City, NY", "lat": 40.7127281, "lon": -74.0060152, "level": 2}, {"school": "Purdue", "city": "Indianapolis, IN", "lat": 39.7683331, "lon": -86.1583502, "level": 1}, {"school": "Purdue", "city": "Lafayette, IN", "lat": 40.4191229, "lon": -86.8919011, "level": 2}, {"school": "Rutgers", "city": "New York City, NY", "lat": 40.7127281, "lon": -74.0060152, "level": 1}, {"school": "Rutgers", "city": "New Brunswick, NJ", "lat": 40.4951365, "lon": -74.4439254, "level": 2}, {"school": "UCLA", "city": "Los Angeles, CA", "lat": 34.0536909, "lon": -118.242766, "level": 1}, {"school": "UCLA", "city": "San Franciso", "lat": 12.7455071, "lon": -84.9639702, "level": 2}, {"school": "USC", "city": "Los Angeles, CA", "lat": 34.0536909, "lon": -118.242766, "level": 1}, {"school": "USC", "city": "San Franciso", "lat": 12.7455071, "lon": -84.9639702, "level": 2}, {"school": "Washington", "city": "Seattle, WA", "lat": 47.6038321, "lon": -122.330062, "level": 1}, {"school": "Washington", "city": "California", "lat": 36.7014631, "lon": -118.755997, "level": 2}, {"school": "Wisconsin", "city": "Madison, WI", "lat": 43.07469, "lon": -89.3841663, "level": 1}, {"school": "Wisconsin", "city": "Milwaukee, WI", "lat": 43.0386475, "lon": -87.9090751, "level": 2}, {"school": "Alabama", "city": "Tuscaloosa, AL", "lat": 33.2095614, "lon": -87.5675258, "level": 1}, {"school": "Alabama", "city": "Birmingham AL", "lat": 33.5712655, "lon": -86.7657858, "level": 2}, {"school": "Arkansas", "city": "Texas", "lat": 31.2638905, "lon": -98.5456116, "level": 2}, {"school": "Auburn", "city": "Columbus Area", "lat": 8.3186176, "lon": -13.0441486, "level": 1}, {"school": "Florida", "city": "Gainseville, FL", "lat": 28.971502, "lon": -82.4881542, "level": 1}, {"school": "Florida", "city": "Miami, FL", "lat": 25.7741566, "lon": -80.1935973, "level": 2}, {"school": "Georgia", "city": "Atlanta, GA", "lat": 33.7544657, "lon": -84.3898151, "level": 1}, {"school": "Georgia", "city": "Athens, GA", "lat": 33.9597677, "lon": -83.376398, "level": 2}, {"school": "Kentucky", "city": "Lexington, KY ", "lat": 38.0464066, "lon": -84.4970393, "level": 1}, {"school": "Kentucky", "city": "Louisville, KY", "lat": 38.2542376, "lon": -85.759407, "level": 2}, {"school": "LSU", "city": "Baton Rouge, LA", "lat": 30.4494155, "lon": -91.1869659, "level": 1}, {"school": "Mississippi State", "city": "Jackson, MS", "lat": 32.2998686, "lon": -90.1830408, "level": 1}, {"school": "Mississippi State", "city": "Starkville, MS", "lat": 33.4638745, "lon": -88.8152074, "level": 2}, {"school": "Missouri", "city": "St. Louis, MO", "lat": 38.6254063, "lon": -90.190009, "level": 1}, {"school": "Missouri", "city": "Columbus MO", "lat": 38.8586209, "lon": -93.8907752, "level": 2}, {"school": "Oklahoma", "city": "Oklahoma City, OK", "lat": 35.4729886, "lon": -97.5170536, "level": 1}, {"school": "Oklahoma", "city": "Norman, OK", "lat": 35.2225717, "lon": -97.4394816, "level": 2}, {"school": "South Carolina", "city": "Columbia, SC", "lat": 34.000754, "lon": -81.0352313, "level": 1}, {"school": "Tennessee", "city": "Knoxville, TN", "lat": 35.9603948, "lon": -83.9210261, "level": 1}, {"school": "Tennessee", "city": "Nashville, TN", "lat": 36.1622767, "lon": -86.7742984, "level": 2}, {"school": "Texas", "city": "Austin, TX", "lat": 30.2711286, "lon": -97.7436995, "level": 1}, {"school": "Texas", "city": "Houston TX", "lat": 29.7589382, "lon": -95.3676974, "level": 2}, {"school": "Texas A&M", "city": "Houston, TX", "lat": 29.7589382, "lon": -95.3676974, "level": 1}, {"school": "Texas A&M", "city": "Dallas, TX", "lat": 32.7762719, "lon": -96.7968559, "level": 2}, {"school": "Ole Miss", "city": "Oxford, MS", "lat": 34.3663773, "lon": -89.5187664, "level": 1}];
+
+    function getStyle(level) {
+        if (level === 1) {
+            return { color: "#08306b", fillColor: "#08306b", fillOpacity: 0.45 };
+        }
+        if (level === 2) {
+            return { color: "#2171b5", fillColor: "#2171b5", fillOpacity: 0.30 };
+        }
+        return { color: "#6baed6", fillColor: "#6baed6", fillOpacity: 0.20 };
+    }
+
+    function drawCircles(selectedSchool) {
+        circles.forEach(function(circle) {
+            mapObj.removeLayer(circle);
+        });
+        circles = [];
+
+        cityData.forEach(function(item) {
+            if (selectedSchool === "all" || item.school === selectedSchool) {
+
+                var style = getStyle(item.level);
+
+                var circle = L.circle([item.lat, item.lon], {
+                    radius: 96560.4,
+                    color: style.color,
+                    fillColor: style.fillColor,
+                    fillOpacity: style.fillOpacity,
+                    weight: 2
+                }).addTo(mapObj);
+
+                circle.bindTooltip(item.school + " - " + item.city);
+                circles.push(circle);
+            }
+        });
+    }
+
+    document.getElementById("schoolSelect").addEventListener("change", function() {
+        drawCircles(this.value);
+    });
+
+    setTimeout(function() {
+        drawCircles("all");
+    }, 500);
+
+});
+</script>
+    
+            <div class="folium-map" id="map_5ac11cae58eb9c78356579f82ea0f6c2" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_5ac11cae58eb9c78356579f82ea0f6c2 = L.map(
+                "map_5ac11cae58eb9c78356579f82ea0f6c2",
+                {
+                    center: [39.5, -98.35],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 4,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_86ac296c5499f2fce99f27b4e635447c = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_86ac296c5499f2fce99f27b4e635447c.addTo(map_5ac11cae58eb9c78356579f82ea0f6c2);
+        
+</script>
+</html>
