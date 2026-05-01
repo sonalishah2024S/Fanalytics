@@ -7,7 +7,8 @@ df = pd.read_csv("geocoded_power4.csv")
 school_col = "School"
 city_cols = ["City 1", "City 2", "City 3"]
 
-radius_meters = 60 * 1609.34
+# IMPORTANT: make sure this column exists from your clustering step
+genotype_col = "Archetype"
 
 m = folium.Map(
     location=[39.5, -98.35],
@@ -19,8 +20,9 @@ circle_data = []
 
 for _, row in df.iterrows():
     school = row[school_col]
-    
-    for i, city_col in enumerate(city_cols):   # i = 0,1,2
+    genotype = row.get(genotype_col, "Unknown")
+
+    for i, city_col in enumerate(city_cols):
         lat_col = f"{city_col}_lat"
         lon_col = f"{city_col}_lon"
 
@@ -30,13 +32,15 @@ for _, row in df.iterrows():
                 "city": row[city_col],
                 "lat": float(row[lat_col]),
                 "lon": float(row[lon_col]),
-                "level": i + 1   # 1, 2, or 3
+                "level": i + 1,
+                "genotype": genotype
             })
 
 circle_json = json.dumps(circle_data)
 
 school_options = "".join(
-    sorted([f'<option value="{school}">{school}</option>' for school in df[school_col].dropna().unique()])
+    sorted([f'<option value="{school}">{school}</option>' 
+            for school in df[school_col].dropna().unique()])
 )
 
 dropdown_html = f"""
@@ -64,14 +68,19 @@ document.addEventListener("DOMContentLoaded", function() {{
     var circles = [];
     var cityData = {circle_json};
 
-    function getStyle(level) {{
-        if (level === 1) {{
-            return {{ color: "#08306b", fillColor: "#08306b", fillOpacity: 0.45 }};
-        }}
-        if (level === 2) {{
-            return {{ color: "#2171b5", fillColor: "#2171b5", fillOpacity: 0.30 }};
-        }}
-        return {{ color: "#6baed6", fillColor: "#6baed6", fillOpacity: 0.20 }};
+    function getColor(genotype) {{
+        if (genotype === "National Powerhouses") return "#d73027";
+        if (genotype === "Regional Loyalists") return "#1a9850";
+        if (genotype === "Spectator Fans") return "#4575b4";
+        if (genotype === "Selective Affluents") return "#fdae61";
+        if (genotype === "Debbie Downers") return "#984ea3";
+        return "#999999";
+    }}
+
+    function getRadius(level) {{
+        if (level === 1) return 120000;
+        if (level === 2) return 80000;
+        return 50000;
     }}
 
     function drawCircles(selectedSchool) {{
@@ -83,15 +92,22 @@ document.addEventListener("DOMContentLoaded", function() {{
         cityData.forEach(function(item) {{
             if (selectedSchool === "all" || item.school === selectedSchool) {{
 
-                var style = getStyle(item.level);
+                var color = getColor(item.genotype);
 
                 var circle = L.circle([item.lat, item.lon], {{
-                    radius: {radius_meters},
-                    color: style.color,
-                    fillColor: style.fillColor,
-                    fillOpacity: style.fillOpacity,
+                    radius: getRadius(item.level),
+                    color: color,
+                    fillColor: color,
+                    fillOpacity: 0.35,
                     weight: 2
                 }}).addTo(mapObj);
+
+                circle.bindPopup(
+                    "<b>" + item.school + "</b><br>" +
+                    "City: " + item.city + "<br>" +
+                    "Rank: " + item.level + "<br>" +
+                    "Fanbase Type: " + item.genotype
+                );
 
                 circle.bindTooltip(item.school + " - " + item.city);
                 circles.push(circle);
@@ -106,14 +122,30 @@ document.addEventListener("DOMContentLoaded", function() {{
     setTimeout(function() {{
         drawCircles("all");
     }}, 500);
+    var legend = L.control({{position: 'bottomright'}});
+    legend.onAdd = function () {{
+        var div = L.DomUtil.create('div', 'info legend');
+        div.style.background = "white";
+        div.style.padding = "10px";
+        div.style.border = "2px solid gray";
+
+        div.innerHTML += "<b>Fanbase Types</b><br>";
+        div.innerHTML += "<i style='background:#d73027;width:10px;height:10px;display:inline-block;'></i> Powerhouses<br>";
+        div.innerHTML += "<i style='background:#1a9850;width:10px;height:10px;display:inline-block;'></i> Regional Loyalists<br>";
+        div.innerHTML += "<i style='background:#4575b4;width:10px;height:10px;display:inline-block;'></i> Spectator Fans<br>";
+        div.innerHTML += "<i style='background:#fdae61;width:10px;height:10px;display:inline-block;'></i> Selective Affluents<br>";
+        div.innerHTML += "<i style='background:#984ea3;width:10px;height:10px;display:inline-block;'></i> Debbie Downers<br>";
+
+        return div;
+    }};
+    legend.addTo(mapObj);
 
 }});
 </script>
 """
+
 m.get_root().html.add_child(folium.Element(dropdown_html))
 
-print("Number of circles:", len(circle_data))
+m.save("school_city_radius_map_improved.html")
 
-m.save("school_city_radius_map.html")
-
-print("Done! Saved as school_city_radius_map.html")
+print("Done! Improved map saved.")
