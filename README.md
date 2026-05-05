@@ -74,7 +74,7 @@ fanbase-genotyping-dashboard/
 
 ### View the Live Dashboard
 
-Visit **[your-dashboard-url.streamlit.app](https://your-app-url.streamlit.app)** to interact with the dashboard immediately.
+Visit **[[your-dashboard-url.streamlit.app](https://your-app-url.streamlit.app](https://fanalytics-wukublzufsd2xdx8qdxxvf.streamlit.app/))** to interact with the dashboard immediately.
 
 ### Run Locally
 
