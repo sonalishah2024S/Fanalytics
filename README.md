@@ -6,7 +6,7 @@ An interactive Streamlit dashboard that classifies Power 4 college athletics fan
 **Academic Institution:** Virginia Tech CMDA Capstone 2026  
 **Team:** Fanalytics
 
-🔗 **[View Live Dashboard](https://your-app-url.streamlit.app)** *(Replace with your actual Streamlit URL)*
+🔗 **[View Live Dashboard]([https://your-app-url.streamlit.app](https://fanalytics-wukublzufsd2xdx8qdxxvf.streamlit.app/))** *(Replace with your actual Streamlit URL)*
 
 ---
 
