@@ -60,7 +60,7 @@ for genotype_name, data in genotypes.items():
 # ----------------------------------------------------------------------------
 
 numeric_cols = [
-    "5_Year_Pct_Change_In_Attendane",
+    "5_Year_Pct_Change",
     "Instagram_Followers_FB (Thousands)",
     "Instagram_Followers_BB (Thousands)",
     "Donation_Revenue (Millions)",
