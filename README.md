@@ -172,6 +172,11 @@ This dashboard was developed as part of a capstone project for **Rallyoop, Inc.*
 
 ---
 
+## ⚠️ Dashboard Limitations
+
+This dashboard is primarily intended for local hosting and demonstration purposes. Performance may decrease as dataset size and dashboard complexity increase. Additionally, updates currently require manual dataset and code changes rather than automated live data integration. Streamlit also has limited built-in authentication and security features, meaning additional infrastructure would be needed for large-scale production deployment.
+
+---
 ## 👥 Team
 
 **Team Fanalytics** - Virginia Tech CMDA 2026
