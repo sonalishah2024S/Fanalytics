@@ -152,25 +152,21 @@ if 'page' not in st.session_state:
 # Sidebar navigation
 st.sidebar.title("🏈 Navigation")
 
-# Determine the page index
-if 'nav_to_page' in st.session_state:
-    # Button navigation takes priority
-    page_index = st.session_state.nav_to_page
-else:
-    # Check if radio button has been used before
-    if 'page_radio' in st.session_state:
-        page_options = ["User Guide", "Home", "Genotype Profiles", "School Detail", "Compare Schools", "Classify New School"]
-        page_index = page_options.index(st.session_state.page_radio)
-    else:
-        # First time loading - default to Home
-        page_index = 1
+page_options = ["User Guide", "Home", "Genotype Profiles", "School Detail", "Compare Schools", "Classify New School"]
 
+# Initialize page state
+if "page" not in st.session_state:
+    st.session_state.page = "Home"
+
+# Sidebar navigation (this is the ONLY controller)
 page = st.sidebar.radio(
     "Select Page",
-    ["User Guide", "Home", "Genotype Profiles", "School Detail", "Compare Schools", "Classify New School"],
-    index=page_index,
-    key='page_radio'
+    page_options,
+    index=page_options.index(st.session_state.page)
 )
+
+# Sync session state
+st.session_state.page = page
 
 # Clear the nav_to_page flag AFTER the radio button is set
 if 'nav_to_page' in st.session_state:
@@ -369,7 +365,7 @@ elif page == "Home":
         
         with col2:
             if st.button("View →", key=f"btn_{name}", use_container_width=True):
-                st.session_state.nav_to_page = 3  # Genotype Profiles is now index 2
+                st.session_state.page = "Genotype Profiles"
                 st.session_state.nav_to_genotype = name
                 st.rerun()
     
@@ -470,7 +466,7 @@ elif page == "Home":
                 with col1:
                     if st.button("View Details", type="primary"):
                         # Set BOTH the page AND the genotype
-                        st.session_state.nav_to_page = 2  # Genotype Profiles is now index 2
+                        st.session_state.page = "Genotype Profiles" # Genotype Profiles is now index 2
                         st.session_state.nav_to_genotype = genotype_name
                         st.rerun()
                 with col2:
@@ -811,9 +807,11 @@ elif page == "Classify New School":
             
             distances = np.linalg.norm(kmeans.cluster_centers_ - new_data_scaled, axis=1)
             
-            for i, (genotype, dist) in enumerate(zip(cluster_to_genotype.values(), distances)):
+            for i, dist in enumerate(distances):
+                genotype = cluster_to_genotype.get(i, "Unknown")
                 marker = " ← **BEST MATCH**" if i == cluster else ""
                 st.markdown(f"- **{genotype}**: {dist:.2f}{marker}")
+
         else:
             st.warning("Please enter a school name")
 
