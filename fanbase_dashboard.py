@@ -598,7 +598,7 @@ elif page == "Compare Schools":
 
         st.subheader("Attribute Comparison")
         pretty_names = {
-            "5_Year_Pct_Change": "5-Year Change (%)",
+            "5_Year_Pct_Change": "5-Year Change in Attendance (%)",
             "Instagram_Followers_FB (Thousands)": "FB Instagram (K)",
             "Instagram_Followers_BB (Thousands)": "BB Instagram (K)",
             "Donation_Revenue (Millions)": "Donations ($M)",
