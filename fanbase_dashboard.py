@@ -369,7 +369,7 @@ elif page == "Home":
         
         with col2:
             if st.button("View →", key=f"btn_{name}", use_container_width=True):
-                st.session_state.nav_to_page = 2  # Genotype Profiles is now index 2
+                st.session_state.nav_to_page = 3  # Genotype Profiles is now index 2
                 st.session_state.nav_to_genotype = name
                 st.rerun()
     
