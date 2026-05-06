@@ -150,7 +150,6 @@ if 'page' not in st.session_state:
     st.session_state.page = 'home'
 
 # Sidebar navigation
-# Sidebar navigation
 st.sidebar.title("🏈 Navigation")
 
 # Determine the page index
@@ -176,6 +175,17 @@ page = st.sidebar.radio(
 # Clear the nav_to_page flag AFTER the radio button is set
 if 'nav_to_page' in st.session_state:
     del st.session_state.nav_to_page
+
+# Scroll to top on page change
+import streamlit.components.v1 as components
+components.html(
+    """
+    <script>
+        window.parent.document.querySelector('section.main').scrollTo(0, 0);
+    </script>
+    """,
+    height=0,
+)
 
 # Main content
 if page == "User Guide":
