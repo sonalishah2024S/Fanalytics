@@ -152,18 +152,38 @@ if 'page' not in st.session_state:
 # Sidebar navigation
 st.sidebar.title("🏈 Navigation")
 
+# Initialize current_page in session state if it doesn't exist
+if 'current_page' not in st.session_state:
+    st.session_state.current_page = 1  # Default to Home
+
 # Check if we need to navigate to a specific page
 if 'nav_to_page' in st.session_state:
     page_index = st.session_state.nav_to_page
+    st.session_state.current_page = page_index  # Update current page
     del st.session_state.nav_to_page
 else:
-    page_index = 1  # Default to Home (index 1), User Guide is first (index 0)
+    page_index = st.session_state.current_page  # Use the stored current page
 
 page = st.sidebar.radio(
     "Select Page",
     ["User Guide", "Home", "Genotype Profiles", "School Detail", "Compare Schools", "Classify New School"],
-    index=page_index
+    index=page_index,
+    key='page_radio'
 )
+
+# Update current_page when user manually changes the radio selection
+if page == "User Guide":
+    st.session_state.current_page = 0
+elif page == "Home":
+    st.session_state.current_page = 1
+elif page == "Genotype Profiles":
+    st.session_state.current_page = 2
+elif page == "School Detail":
+    st.session_state.current_page = 3
+elif page == "Compare Schools":
+    st.session_state.current_page = 4
+elif page == "Classify New School":
+    st.session_state.current_page = 5
 
 # Scroll to top on page change
 import streamlit.components.v1 as components
