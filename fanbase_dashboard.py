@@ -156,7 +156,7 @@ if "page" not in st.session_state:
 page = st.sidebar.radio(
     "Select Page",
     page_options,
-    index=page_options.index(st.session_state.page)
+    key="page"
 )
 
 # Sync session state
