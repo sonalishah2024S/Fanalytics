@@ -150,19 +150,21 @@ if 'page' not in st.session_state:
     st.session_state.page = 'home'
 
 # Sidebar navigation
+# Sidebar navigation
 st.sidebar.title("🏈 Navigation")
 
-# Initialize current_page in session state if it doesn't exist
-if 'current_page' not in st.session_state:
-    st.session_state.current_page = 1  # Default to Home
-
-# Check if we need to navigate to a specific page
+# Determine the page index
 if 'nav_to_page' in st.session_state:
+    # Button navigation takes priority
     page_index = st.session_state.nav_to_page
-    st.session_state.current_page = page_index  # Update current page
-    del st.session_state.nav_to_page
 else:
-    page_index = st.session_state.current_page  # Use the stored current page
+    # Check if radio button has been used before
+    if 'page_radio' in st.session_state:
+        page_options = ["User Guide", "Home", "Genotype Profiles", "School Detail", "Compare Schools", "Classify New School"]
+        page_index = page_options.index(st.session_state.page_radio)
+    else:
+        # First time loading - default to Home
+        page_index = 1
 
 page = st.sidebar.radio(
     "Select Page",
@@ -171,30 +173,9 @@ page = st.sidebar.radio(
     key='page_radio'
 )
 
-# Update current_page when user manually changes the radio selection
-if page == "User Guide":
-    st.session_state.current_page = 0
-elif page == "Home":
-    st.session_state.current_page = 1
-elif page == "Genotype Profiles":
-    st.session_state.current_page = 2
-elif page == "School Detail":
-    st.session_state.current_page = 3
-elif page == "Compare Schools":
-    st.session_state.current_page = 4
-elif page == "Classify New School":
-    st.session_state.current_page = 5
-
-# Scroll to top on page change
-import streamlit.components.v1 as components
-components.html(
-    """
-    <script>
-        window.parent.document.querySelector('section.main').scrollTo(0, 0);
-    </script>
-    """,
-    height=0,
-)
+# Clear the nav_to_page flag AFTER the radio button is set
+if 'nav_to_page' in st.session_state:
+    del st.session_state.nav_to_page
 
 # Main content
 if page == "User Guide":
