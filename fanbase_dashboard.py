@@ -143,12 +143,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Initialize session state
-if 'selected_genotype' not in st.session_state:
-    st.session_state.selected_genotype = None
-if 'page' not in st.session_state:
-    st.session_state.page = 'home'
-
 # Sidebar navigation
 st.sidebar.title("🏈 Navigation")
 
@@ -167,10 +161,6 @@ page = st.sidebar.radio(
 
 # Sync session state
 st.session_state.page = page
-
-# Clear the nav_to_page flag AFTER the radio button is set
-if 'nav_to_page' in st.session_state:
-    del st.session_state.nav_to_page
 
 # Scroll to top on page change
 import streamlit.components.v1 as components
