@@ -587,11 +587,14 @@ elif page == "Compare Schools":
 
     selected = [s for s in [school1, school2, school3] if s]
 
-    compare_df["Genotype"] = compare_df["School"].map(genotype_lookup)
+    compare_df = df[df["School"].isin(selected)].copy()
 
-    st.subheader("School Comparison Overview")
-    display_cols = ["School", "Genotype", "5_Year_Pct_Change", "Instagram_Followers_FB (Thousands)", "Donation_Revenue (Millions)", "Win_Pct_Since_2003", "Graduate_Earnings(Thousands)"]
-    st.dataframe(compare_df[display_cols].set_index("School"))
+    if not compare_df.empty:
+        compare_df["Genotype"] = compare_df["School"].map(genotype_lookup)
+
+        st.subheader("School Comparison Overview")
+        display_cols = ["School", "Genotype", "5_Year_Pct_Change", "Instagram_Followers_FB (Thousands)", "Donation_Revenue (Millions)", "Win_Pct_Since_2003", "Graduate_Earnings(Thousands)"]
+        st.dataframe(compare_df[display_cols].set_index("School"))
 
         st.subheader("Attribute Comparison")
         pretty_names = {
