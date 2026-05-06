@@ -589,13 +589,8 @@ elif page == "Compare Schools":
 
     compare_df["Genotype"] = compare_df["School"].map(genotype_lookup)
 
-# Rename columns for cleaner display
-compare_df = compare_df.rename(columns={
-    "5_Year_Pct_Change": "5-Year % Change in Attendance"
-})
-
 st.subheader("School Comparison Overview")
-display_cols = ["School", "Genotype", "5-Year % Change in Attendance", "Instagram_Followers_FB (Thousands)", "Donation_Revenue (Millions)", "Win_Pct_Since_2003", "Graduate_Earnings(Thousands)"]
+display_cols = ["School", "Genotype", "5_Year_Pct_Change", "Instagram_Followers_FB (Thousands)", "Donation_Revenue (Millions)", "Win_Pct_Since_2003", "Graduate_Earnings(Thousands)"]
 st.dataframe(compare_df[display_cols].set_index("School"))
 
         st.subheader("Attribute Comparison")
