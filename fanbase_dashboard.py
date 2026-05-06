@@ -159,9 +159,6 @@ page = st.sidebar.radio(
     key="page"
 )
 
-# Sync session state
-st.session_state.page = page
-
 # Scroll to top on page change
 import streamlit.components.v1 as components
 components.html(
