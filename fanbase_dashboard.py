@@ -171,6 +171,9 @@ selected_page = st.sidebar.radio(
 if selected_page != st.session_state.current_page:
     st.session_state.current_page = selected_page
 
+
+page = st.session_state.current_page
+
 # Scroll to top on page change
 import streamlit.components.v1 as components
 components.html(
