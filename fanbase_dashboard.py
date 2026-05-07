@@ -36,7 +36,7 @@ genotypes = {
         "count": 13,
         "description": "Multi-sport fans where basketball matters alongside football",
         "color": "#e74c3c",
-        "schools": ["Arizona", "Arkansas", "Auburn", "Indiana", "Iowa State" "Kansas", "Kentucky", 
+        "schools": ["Arizona", "Arkansas", "Auburn", "Indiana", "Iowa State", "Kansas", "Kentucky", 
                    "Michigan State", "Nebraska", "North Carolina", "Purdue", "Rutgers", "Wisconsin"]
     },
     "Disengaged Fans": {
