@@ -144,31 +144,27 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Sidebar navigation
-# Sidebar navigation
 st.sidebar.title("🏈 Navigation")
-
 page_options = ["User Guide", "Home", "Genotype Profiles", "School Detail", "Compare Schools", "Classify New School"]
-
 # Initialize page state if it doesn't exist
 if "current_page" not in st.session_state:
     st.session_state.current_page = "Home"
-
-# Handle button navigation FIRST (before the radio renders)
+# Check if button navigation was triggered
 if "nav_to_page" in st.session_state:
     st.session_state.current_page = st.session_state.nav_to_page
     del st.session_state.nav_to_page
-
-# Sidebar radio button - always shows current_page
-page = st.sidebar.radio(
+# Get the index for the current page
+current_index = page_options.index(st.session_state.current_page)
+# Sidebar radio button
+selected_page = st.sidebar.radio(
     "Select Page",
     page_options,
-    index=page_options.index(st.session_state.current_page)
+    index=current_index
 )
-
-# If user manually clicked radio (and it's different from current), update
-if page != st.session_state.current_page:
-    st.session_state.current_page = page
-
+# Update current page if user manually changed the radio button
+if selected_page != st.session_state.current_page:
+    st.session_state.current_page = selected_page
+page = st.session_state.current_page
 # Scroll to top on page change
 import streamlit.components.v1 as components
 components.html(
@@ -179,7 +175,6 @@ components.html(
     """,
     height=0,
 )
-
 # Main content
 if page == "User Guide":
     st.markdown('<div class="main-header">User Guide</div>', unsafe_allow_html=True)
