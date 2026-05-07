@@ -148,16 +148,31 @@ st.sidebar.title("🏈 Navigation")
 
 page_options = ["User Guide", "Home", "Genotype Profiles", "School Detail", "Compare Schools", "Classify New School"]
 
-# Initialize page state
-if "page" not in st.session_state:
-    st.session_state.page = "Home"
+# Initialize page state if it doesn't exist
+if "current_page" not in st.session_state:
+    st.session_state.current_page = "Home"
 
-# Sidebar navigation (this is the ONLY controller)
-page = st.sidebar.radio(
+# Check if button navigation was triggered
+if "nav_to_page" in st.session_state:
+    st.session_state.current_page = st.session_state.nav_to_page
+    del st.session_state.nav_to_page
+
+# Get the index for the current page
+current_index = page_options.index(st.session_state.current_page)
+
+# Sidebar radio button
+selected_page = st.sidebar.radio(
     "Select Page",
     page_options,
-    key="page"
+    index=current_index
 )
+
+# Update current page if user manually changed the radio button
+if selected_page != st.session_state.current_page:
+    st.session_state.current_page = selected_page
+
+# Use current_page for rendering
+page = st.session_state.current_page
 
 # Scroll to top on page change
 import streamlit.components.v1 as components
@@ -352,7 +367,7 @@ elif page == "Home":
         
         with col2:
             if st.button("View →", key=f"btn_{name}", use_container_width=True):
-                st.session_state.page = "Genotype Profiles"
+                st.session_state.nav_to_page = "Genotype Profiles"  # ✅ Use nav_to_page instead
                 st.session_state.nav_to_genotype = name
                 st.rerun()
     
@@ -452,8 +467,7 @@ elif page == "Home":
                 col1, col2 = st.columns([1, 4])
                 with col1:
                     if st.button("View Details", type="primary"):
-                        # Set BOTH the page AND the genotype
-                        st.session_state.page = "Genotype Profiles" # Genotype Profiles is now index 2
+                        st.session_state.nav_to_page = "Genotype Profiles"  # ✅ Use nav_to_page instead
                         st.session_state.nav_to_genotype = genotype_name
                         st.rerun()
                 with col2:
