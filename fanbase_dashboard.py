@@ -27,7 +27,7 @@ genotypes = {
         "description": "College towns with strong local support and unconditional loyalty",
         "color": "#2ecc71",
         "schools": ["Arizona State", "Cincinnati", "Colorado", "Florida State", 
-                   "Iowa", "Iowa State", "Kansas State", "Louisville", "Minnesota", 
+                   "Iowa", "Kansas State", "Louisville", "Minnesota", 
                    "Mississippi State", "Missouri", "NC State", "Oklahoma State", 
                    "Ole Miss", "Oregon", "Penn State", "South Carolina", "Texas Tech", 
                    "UCF", "Utah", "Virginia Tech", "Washington", "West Virginia"]
@@ -36,7 +36,7 @@ genotypes = {
         "count": 13,
         "description": "Multi-sport fans where basketball matters alongside football",
         "color": "#e74c3c",
-        "schools": ["Arizona", "Arizona State", "Arkansas", "Auburn", "Indiana", "Kansas", "Kentucky", 
+        "schools": ["Arizona", "Arkansas", "Auburn", "Indiana", "Iowa State" "Kansas", "Kentucky", 
                    "Michigan State", "Nebraska", "North Carolina", "Purdue", "Rutgers", "Wisconsin"]
     },
     "Disengaged Fans": {
